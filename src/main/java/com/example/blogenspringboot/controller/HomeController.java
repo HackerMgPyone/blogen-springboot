@@ -1,6 +1,7 @@
 package com.example.blogenspringboot.controller;
 
 import com.example.blogenspringboot.entity.Category;
+import com.example.blogenspringboot.entity.Post;
 import com.example.blogenspringboot.entity.User;
 import com.example.blogenspringboot.service.BlogService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,24 @@ public class HomeController {
     public String welcome(Model model){
         model.addAttribute("category",new Category());
         model.addAttribute("user",new User());
+        model.addAttribute("post",new Post());
+        model.addAttribute("posts",blogService.listAllPost());
+        model.addAttribute("users",blogService.listAllUsers());
+        model.addAttribute("categories",blogService.listAllCategories());
         return "index";
+    }
+    @PostMapping("/save-post")
+    public String savePost(Post post,BindingResult result){
+        if (result.hasErrors()){
+            return "index";
+        }
+        blogService.createPost(post);
+        return "redirect:/";
+    }
+    @GetMapping("/list-posts")
+    public String listAllPost(Model model){
+        model.addAttribute("posts",blogService.listAllPost());
+        return "post";
     }
 
     @PostMapping("/save-user")
@@ -32,6 +50,11 @@ public class HomeController {
         }
         blogService.createUser(user);
         return "redirect:/";
+    }
+    @GetMapping("/list-users")
+    public String listAllUser(Model model){
+        model.addAttribute("users",blogService.listAllUsers());
+        return "user";
     }
     @PostMapping("/save-category")
     public String saveCategory(Category category, BindingResult result){
