@@ -27,6 +27,10 @@ public class BlogService {
         return userDao.findAll();
     }
 
+    public List<Post> listAllPost(){
+        return postDao.findAll();
+    }
+
     public void createCategory(Category category){
         categoryDao.save(category);
     }
@@ -46,7 +50,5 @@ public class BlogService {
         postDao.save(post);
     }
 
-    public List<Post> listAllPost(){
-        return postDao.findAll();
-    }
+
 }
